@@ -11,11 +11,11 @@ public class Main {
             try{
                 int choose = Menu.initMenu();
                 if (choose == 1) {
-                    CustomerMenu.initCustomerMenu();
+                    CustomerMenu.inputCustomerMenu();
                 } else if (choose == 2) {
-                    ParameterMenu.initParameterMenu();
+                    ParameterMenu.inputParameterMenu();
                 } else if (choose == 3) {
-                    SummaryMenu.initSummaryMenu();
+                    SummaryMenu.inputSummaryMenu();
                 }else{
                     if (choose == 4) {
                         System.out.println("\n프로그램 종료");
