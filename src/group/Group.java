@@ -12,4 +12,11 @@ public class Group {
         this.parameter = parameter;
     }
 
+    public GroupType getGroupType() {
+        return groupType;
+    }
+
+    public Parameter getParameter() {
+        return parameter;
+    }
 }

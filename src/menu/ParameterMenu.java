@@ -1,6 +1,7 @@
 package menu;
 
 import group.GroupType;
+import group.Parameter;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
@@ -101,13 +102,20 @@ public class ParameterMenu extends Menu{
 
     public static void setParameterManage()throws IOException{
         while(true){
+        String selGroup = selectGroup().toUpperCase();
+        if(selGroup.equals("END")){
+            return;
+        }
+        GroupType groupType;
+        Parameter parameter = new Parameter();
+
             int choose=setParameterMenu();
             if (choose == 1) {
-                setMinimumSpentTime();
+                setMinimumSpentTime(parameter);
             } else if (choose == 2) {
-                setMinimumSpentMoney();
+                setMinimumSpentMoney(parameter);
             } else if (choose == 3) {
-                return;
+                break;
             }else{
                 System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
             }
@@ -119,10 +127,44 @@ public class ParameterMenu extends Menu{
     public static void updateParameter(){
 
     }
-    public static void setMinimumSpentTime(){
-
+    public static void setMinimumSpentTime(Parameter parameter)throws IOException{
+        while(true){
+            try{
+                System.out.println("================================");
+                System.out.println("설정할 최소 이용시간을 입력해주세요.");
+                System.out.println("================================");
+                int time = Integer.parseInt(Menu.br.readLine());
+                if(time<0){
+                    throw new IndexOutOfBoundsException();
+                }else{
+                    parameter.setMinimumSpentTime(time);
+                    return;
+                }
+            }catch (IndexOutOfBoundsException err){
+                System.out.println("\n이용시간은 0보다 작을 수 없습니다. 다시 입력해주세요.");
+            }catch (NumberFormatException err){
+                System.out.println("\n잘못된 입력값입니다. 다시 입력해주세요");
+            }
+        }
     }
-    public static void setMinimumSpentMoney(){
-
+    public static void setMinimumSpentMoney(Parameter parameter)throws IOException{
+        while(true){
+            try{
+                System.out.println("================================");
+                System.out.println("설정할 최소 이용금액을 입력해주세요.");
+                System.out.println("================================");
+                int money = Integer.parseInt(Menu.br.readLine());
+                if(money<0){
+                    throw new IndexOutOfBoundsException();
+                }else{
+                    parameter.setMinimumSpentMoney(money);
+                    return;
+                }
+            }catch (IndexOutOfBoundsException err){
+                System.out.println("이용금액은 0보다 작을 수 없습니다. 다시 입력해주세요.");
+            }catch (NumberFormatException err){
+                System.out.println("잘못된 입력값입니다. 다시 입력해주세요.");
+            }
+        }
     }
 }
