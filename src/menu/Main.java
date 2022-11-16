@@ -1,5 +1,7 @@
 package menu;
 
+import group.Groups;
+
 import java.io.IOException;
 import java.util.InputMismatchException;
 
@@ -7,6 +9,7 @@ public class Main {
     public Main(){
     }
     public static void main(String[] args) throws IOException {
+        System.out.println(ParameterMenu.allGroups.toString());
         while (true) {
             try{
                 int choose = Menu.initMenu();

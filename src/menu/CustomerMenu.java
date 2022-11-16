@@ -1,10 +1,13 @@
 package menu;
 
 import customer.Customer;
+import customer.Customers;
 
 import java.io.IOException;
 
 public class CustomerMenu extends Menu{
+
+    public static Customers allCustomers = new Customers();
     public CustomerMenu(){
     }
     public static int initCustomerMenu()throws IOException {

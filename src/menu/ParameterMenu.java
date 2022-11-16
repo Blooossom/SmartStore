@@ -1,12 +1,16 @@
 package menu;
 
+import group.Group;
 import group.GroupType;
+import group.Groups;
 import group.Parameter;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
 
 public class ParameterMenu extends Menu{
+
+    public static Groups allGroups = new Groups();
     public ParameterMenu(){
     }
     public static int initParameterMenu()throws IOException {
@@ -107,22 +111,59 @@ public class ParameterMenu extends Menu{
             return;
         }
         GroupType groupType;
-        Parameter parameter = new Parameter();
-
-            int choose=setParameterMenu();
-            if (choose == 1) {
-                setMinimumSpentTime(parameter);
-            } else if (choose == 2) {
-                setMinimumSpentMoney(parameter);
-            } else if (choose == 3) {
-                break;
-            }else{
-                System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
+        try{
+            groupType=GroupType.valueOf(selGroup);
+        }catch (IllegalArgumentException err){
+            System.out.println("\n잘못된 입력입니다. 다시 입력해주세요.");
+            continue;
+        }
+        Group grp = allGroups.find(groupType);
+            if (grp != null&&grp.getParameter()!=null) {
+                System.out.println("\n"+selGroup+"이미 설정되어 있는 그룹입니다. 다시 선택해주세요.");
+                System.out.println("\n"+grp);
+            }else {
+                Parameter parameter = new Parameter();
+                while(true){
+                    try{
+                        int choose = setParameterMenu();
+                        if (choose == 1) {
+                            setMinimumSpentTime(parameter);
+                        } else if (choose == 2) {
+                            setMinimumSpentMoney(parameter);
+                        } else if (choose == 3) {
+                            break;
+                        } else {
+                            System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
+                        }
+                    }catch (NumberFormatException err){
+                        System.out.println("\n잘못된 입력입니다. 다시 입력해주세요.");
+                    }catch (IndexOutOfBoundsException err){
+                        System.out.println("\n범위를 벗어난 입력입니다. 다시 입력해주세요.");
+                        Menu.br.readLine();
+                    }
+                    allGroups.add(new Group(groupType,parameter));
+                    CustomerMenu.allCustomers.refresh(allGroups);
+                }
             }
         }
     }
-    public static void viewParameter(){
-
+    public static void viewParameter()throws IOException{
+        while(true){
+            String selGroup = selectGroup().toUpperCase();
+            if(selGroup.equals("END")){
+                return;
+            }
+            GroupType groupType;
+            try{
+                groupType=GroupType.valueOf(selGroup);
+            }catch (IllegalArgumentException err){
+                System.out.println("\n잘못된 입력입니다. 다시 입력해주세요.");
+                continue;
+            }
+            Group grp = allGroups.find(groupType);
+            System.out.println();
+            System.out.println(grp);
+        }
     }
     public static void updateParameter(){
 
