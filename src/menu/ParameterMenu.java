@@ -58,7 +58,7 @@ public class ParameterMenu extends Menu{
                 System.out.println("================================");
                 System.out.println("설정할 그룹을 선택해주세요.");
                 System.out.println("NONE, GENERAL, VIP, VVIP");
-                System.out.println("종료를 원하시면 \"END\"를 입력해주세요");
+                System.out.println("종료를 원하시면 \"END\" 를 입력해주세요");
                 System.out.println("================================");
                 String select = Menu.br.readLine().toUpperCase();
                 if (select == null) {
@@ -165,8 +165,48 @@ public class ParameterMenu extends Menu{
             System.out.println(grp);
         }
     }
-    public static void updateParameter(){
+    public static void updateParameter()throws IOException{
+        while(true) {
+            String selGroup = selectGroup().toUpperCase();
+            if (selGroup.equals("END")) {
+                return;
+            }
+            GroupType groupType;
+            try {
+                groupType = GroupType.valueOf(selGroup);
+            } catch (IllegalArgumentException err) {
+                System.out.println("\n잘못된 입력입니다. 다시 입력해주세요");
+                continue;
+            }
+            Group grp = allGroups.find(groupType);
+            if(grp.getParameter()==null){
+                System.out.println("\n선택하신 그룹의 파라미터가 설정되지 않았습니다. 파라미터를 먼저 설정해주세요.");
+            }else{
+                System.out.println("\n"+grp.toString());
+                Parameter parameter = grp.getParameter();
 
+                label1:
+                while (true){
+                    try{
+                        int choose = setParameterMenu();
+                        if (choose == 1) {
+                            setMinimumSpentTime(parameter);
+                        } else if (choose == 2) {
+                            setMinimumSpentMoney(parameter);
+                        } else if (choose == 3) {
+                            break label1;
+                        }else{
+                            throw new IndexOutOfBoundsException();
+                        }
+                    }catch (IndexOutOfBoundsException err){
+                        System.out.println("\n범위를 벗어났습니다. 다시 선택해주세요.");
+                        Menu.br.readLine();
+                    }
+                }
+            }
+            CustomerMenu.allCustomers.refresh(allGroups);
+            System.out.println("\n"+grp.toString());
+        }
     }
     public static void setMinimumSpentTime(Parameter parameter)throws IOException{
         while(true){

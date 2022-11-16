@@ -33,17 +33,15 @@ public class Group {
         Group group = (Group) o;
         return groupType == group.groupType && Objects.equals(parameter, group.parameter);
     }
-
-    @Override
-    public int hashCode() {
-        return 0;
-    }
-
     @Override
     public String toString() {
-        return "Group{" +
-                "groupType=" + groupType +
-                ", parameter=" + parameter +
-                '}';
+        if(this.groupType==null){
+            return "No group.";
+        }else if (this.parameter==null){
+            return "GroupType: "+this.groupType+"\nParameter: null";
+        }else{
+            GroupType var10000 = this.groupType;
+            return "GroupType: " + var10000 + "\nParameter: "+this.parameter.toString();
+        }
     }
 }

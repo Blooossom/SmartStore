@@ -9,6 +9,7 @@ public class Main {
     public Main(){
     }
     public static void main(String[] args) throws IOException {
+        ParameterMenu.allGroups.initialize();
         System.out.println(ParameterMenu.allGroups.toString());
         while (true) {
             try{

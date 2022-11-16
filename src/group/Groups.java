@@ -6,9 +6,18 @@ import java.util.List;
 
 public class Groups {
     public ArrayList<Group> groups;
-    public static int SIZE=10;
     public Groups() {
-        this.groups = new ArrayList<Group>();
+        this.groups = new ArrayList<>();
+    }
+    public void initialize(){
+        int i = 0;
+        GroupType[] groupTypes = GroupType.values();
+        int size = groupTypes.length;
+        for (int j = 0; j <size; ++j) {
+            GroupType groupType = groupTypes[j];
+            this.groups.add(i,new Group(groupType,(Parameter) null));
+            ++i;
+        }
     }
     public int length(){
         return this.groups.size();
@@ -18,7 +27,7 @@ public class Groups {
     }
     public Group find(GroupType groupType){
         ArrayList<Group> groups = this.groups;
-        for (int i = 0; i < groups.size(); ++i) {
+        for (int i = 0; i < groups.size(); i++) {
             Group grp = groups.get(i);
             if(grp.getGroupType()==groupType){
                 return grp;
@@ -41,4 +50,12 @@ public class Groups {
         }
     }
 
+    @Override
+    public String toString() {
+        String str = "";
+        for (int i = 0; i < this.groups.size(); ++i) {
+            str=str + " " + this.groups.get(i).toString()+"\n";
+        }
+        return str;
+    }
 }
