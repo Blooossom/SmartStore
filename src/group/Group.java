@@ -1,5 +1,7 @@
 package group;
 
+import customer.Customers;
+
 import java.util.Objects;
 
 public class Group {
@@ -25,7 +27,9 @@ public class Group {
     public void setParameter(Parameter parameter) {
         this.parameter = parameter;
     }
-
+    public Customers getCustomers(Customers allCustomers){
+        return allCustomers.findCustomers(this);
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

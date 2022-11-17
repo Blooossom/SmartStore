@@ -14,7 +14,7 @@ public class Customers {
         this.customers = new LinkedList<Customer>();
     }
 
-    public List<Customer> getCustomerList() {
+    public List<Customer> getCustomers() {
         return customers;
     }
 
@@ -33,7 +33,9 @@ public class Customers {
             }
         }
     }
-    public Customer get(int i){return i<this.customers.size()? this.customers.get(i):null;}
+    public Customers get(int i){
+        return customers.get(i);
+    }
     public boolean isNull(){
         return this.customers==null;
     }

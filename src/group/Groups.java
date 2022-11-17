@@ -64,6 +64,9 @@ public class Groups {
             grp.setParameter(grp.getParameter());
         }
     }
+    public Group get(int i){
+        return this.groups.get(i);
+    }
 
     @Override
     public String toString() {
