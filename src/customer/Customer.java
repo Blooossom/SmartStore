@@ -1,5 +1,7 @@
 package customer;
 
+import group.Group;
+
 import java.util.Objects;
 
 public class Customer {
@@ -8,10 +10,15 @@ public class Customer {
     private String customerID;
     private int spentTime;
     private int spentMoney;
+    private Group group;
+    private static int AUTO_GENERATOR=0;
     public Customer(){
+        ++AUTO_GENERATOR;
+        this.customerNo=String.format("%04d",AUTO_GENERATOR);
     }
 
     public Customer(String customerNo, String customerName, String customerID, int spentTime, int spentMoney) {
+        ++AUTO_GENERATOR;
         this.customerNo = customerNo;
         this.customerName = customerName;
         this.customerID = customerID;
@@ -57,6 +64,14 @@ public class Customer {
 
     public void setSpentMoney(int spentMoney) {
         this.spentMoney = spentMoney;
+    }
+
+    public Group getGroup() {
+        return this.group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     @Override

@@ -1,13 +1,15 @@
 package group;
 
-import java.util.ArrayList;
+import customer.Customer;
+
+import java.util.List;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Groups {
-    public ArrayList<Group> groups;
+    public List<Group> groups;
     public Groups() {
-        this.groups = new ArrayList<>();
+        this.groups = new LinkedList<>();
     }
     public void initialize(){
         int i = 0;
@@ -19,20 +21,33 @@ public class Groups {
             ++i;
         }
     }
-    public int length(){
+    public int size(){
         return this.groups.size();
     }
     public boolean isNullOrEmpty(){
         return this.groups==null||this.groups.size()==0;
     }
     public Group find(GroupType groupType){
-        ArrayList<Group> groups = this.groups;
+        List<Group> groups = this.groups;
         for (int i = 0; i < groups.size(); i++) {
             Group grp = groups.get(i);
             if(grp.getGroupType()==groupType){
                 return grp;
             }
         }return null;
+    }
+    public Group findByGroupFor(Customer customer){
+        if (this.groups != null && customer != null) {
+            for (int i = this.groups.size()-1; i>=0; --i) {
+                Parameter parameter = this.groups.get(i).getParameter();
+                if(parameter!=null&& customer.getSpentTime()>=parameter.getMinimumSpentTime()){
+                    return this.groups.get(i);
+                }
+            }
+            return null;
+        }else{
+            return null;
+        }
     }
 
     public void add(Group group){
