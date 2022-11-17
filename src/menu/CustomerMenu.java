@@ -132,15 +132,56 @@ public class CustomerMenu extends Menu{
             }
         }
     }
-    public static void updateCustomerData(){
-
+    public static void updateCustomerData()throws IOException{
+        int allCustomerCount = allCustomers.length();
+        viewCustomerData();
+        int custNo=findCustomer(allCustomerCount);
+        if (custNo >= 1 && custNo <= allCustomerCount) {
+            Customer customer = allCustomers.get(custNo-1);
+            if(customer!=null) {
+                while(true) {
+                    while (true) {
+                        int choose= displaySetCustomerMenu();
+                        if (choose == 1) {
+                            setCustomerName(customer);
+                            break;
+                        }
+                        if (choose == 2) {
+                            setCustomerID(customer);
+                            break;
+                        }
+                        if (choose == 3) {
+                            setCustomerSpentTime(customer);
+                            break;
+                        }
+                        if (choose == 4) {
+                            setCustomerSpentMoney(customer);
+                            break;
+                        }
+                        if (choose == 5) {
+                            return;
+                        }
+                        System.out.println("\n잘못된 입력입니다. 다시 입력해주세요.");
+                    }
+                    Group grp = ParameterMenu.allGroups.findByGroupFor(customer);
+                    if (grp == null) {
+                        customer.setGroup((Group) null);
+                    } else if (!grp.equals(customer.getGroup())) {
+                        customer.setGroup(grp);
+                    }
+                }
+            }
+        }
     }
     public static void deleteCustomerData()throws IOException{
         int allCustomerCount = allCustomers.length();
         viewCustomerData();
         int custNo = findCustomer(allCustomerCount);
         if (custNo>=1&&custNo<=allCustomerCount){
-
+            allCustomers.delete(custNo-1);
+            viewCustomerData();
+        }else{
+            System.out.printf("\n잘못된 입력값입니다. 고객 번호는 (%d~%d) 입니다.\n", 1, allCustomerCount);
         }
     }
     public static int findCustomer(int allUserCount)throws IOException{
@@ -184,7 +225,7 @@ public class CustomerMenu extends Menu{
                 System.out.println("고객의 ID를 입력해주세요.");
                 String REGEX = "^[a-zA-Z]{1}[a-zA-Z0-9_]{4,11}";
                 String userID = Menu.br.readLine();
-                if (userID!=null&&userID.equals("")){
+                if (userID!=null&&!userID.equals("")){
                     if (Pattern.matches(REGEX, userID)) {
                         customer.setCustomerID(userID);
                         return;

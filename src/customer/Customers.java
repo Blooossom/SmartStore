@@ -14,7 +14,6 @@ public class Customers {
         this.customers = new LinkedList<Customer>();
     }
 
-
     public List<Customer> getCustomerList() {
         return customers;
     }
@@ -88,5 +87,8 @@ public class Customers {
             System.out.println("No Group!");
             return null;
         }
+    }
+    public void delete(int index){
+        this.customers.remove(index);
     }
 }
