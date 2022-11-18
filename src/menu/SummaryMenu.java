@@ -5,8 +5,11 @@ import customer.Customers;
 import exception.InputEmptyException;
 import exception.InputOutOfRangeException;
 import group.Group;
+import group.GroupType;
 
 import java.io.IOException;
+import java.io.PrintStream;
+import java.util.LinkedList;
 import java.util.List;
 
 public class SummaryMenu extends Menu{
@@ -54,16 +57,49 @@ public class SummaryMenu extends Menu{
             }
         }
     }
-    public static Customers classify(){
-       Customers groupByCustomers = new Customers();
+    public static List<Customers> classify(){
+        List<Customers> groupByCustomers = new LinkedList<>();
         for (int i = 0; i <ParameterMenu.allGroups.size(); ++i) {
             Group grp = ParameterMenu.allGroups.get(i);
             groupByCustomers.get(i) = grp.getCustomers(CustomerMenu.allCustomers);
         }
         return groupByCustomers;
     }
-    public static void viewSummary(){
+    public static void viewSummary(Customers groupByCustomers){
+        System.out.println();
 
+        for (int i = 0; i < ParameterMenu.allGroups.size(); i++) {
+            Group grp = ParameterMenu.allGroups.get(i);
+            int customerCount = 0;
+            if(!groupByCustomers.isNull()&&!groupByCustomers.isEmpty()){
+                customerCount=groupByCustomers.length();
+            }
+            System.out.println();
+            System.out.println("==========================");
+            if (grp.getGroupType().equals(GroupType.NONE)) {
+                System.out.println("Others : "+customerCount+"customer(s)");
+            }else{
+                PrintStream var = System.out;
+                String var1 = grp.getGroupType().toString();
+                var.println(var1 + " Group : "+customerCount + "customer(s)");
+                if (grp.getParameter() == null) {
+                    System.out.println("[Parameter] null");
+                }else{
+                    System.out.println("[Parameter] "+grp.getParameter().toString());
+                }
+            }
+            System.out.println("============================");
+            if(!groupByCustomers.isNull()&&!groupByCustomers.isEmpty()){
+                for (int j = 0; j < customerCount; ++j) {
+                    Customer cust = groupByCustomers.get(j);
+                    if (cust != null) {
+                        System.out.println("No. "+(j+1)+" => "+cust);
+                    }
+                }
+            }else{
+                System.out.println("No customer.");
+            }
+        }
     }
     public static String selectOrder()throws IOException{
         while(true){
@@ -168,6 +204,12 @@ public class SummaryMenu extends Menu{
 
     }
     public static void sortBySpentMoney(OrderType orderType){
+        Customers groupByCustomers = classify();
+        if (orderType != null && !orderType.equals("")) {
+            for (int i = 0; i <groupByCustomers.length(); ++i) {
+                Customer customers = groupByCustomers.get(i).getCustomers();
 
+            }
+        }
     }
 }

@@ -33,11 +33,11 @@ public class Customers {
             }
         }
     }
-    public Customers get(int i){
+    public Customer get(int i){
         return customers.get(i);
     }
     public boolean isNull(){
-        return this.customers==null;
+        return this.customers == null;
     }
     public boolean isEmpty(){
         return this.customers.size()==0;
