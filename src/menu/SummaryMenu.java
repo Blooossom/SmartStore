@@ -57,11 +57,11 @@ public class SummaryMenu extends Menu{
             }
         }
     }
-    public static List<Customers> classify(){
-        List<Customers> groupByCustomers = new LinkedList<>();
+    public static Customers[] classify(){
+        Customers[] groupByCustomers = new Customers[GroupType.values().length];
         for (int i = 0; i <ParameterMenu.allGroups.size(); ++i) {
             Group grp = ParameterMenu.allGroups.get(i);
-            groupByCustomers.get(i) = grp.getCustomers(CustomerMenu.allCustomers);
+            groupByCustomers[i] = grp.getCustomers(CustomerMenu.allCustomers);
         }
         return groupByCustomers;
     }
@@ -204,7 +204,8 @@ public class SummaryMenu extends Menu{
 
     }
     public static void sortBySpentMoney(OrderType orderType){
-        Customers groupByCustomers = classify();
+        Customers groupByCustomers = classify().to;
+
         if (orderType != null && !orderType.equals("")) {
             for (int i = 0; i <groupByCustomers.length(); ++i) {
                 Customer customers = groupByCustomers.get(i).getCustomers();
