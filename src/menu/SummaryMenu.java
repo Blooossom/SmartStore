@@ -9,6 +9,8 @@ import group.GroupType;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,7 +29,7 @@ public class SummaryMenu extends Menu{
                 System.out.println("================================");
                 System.out.println("Choose one : ");
                 int choose= Integer.parseInt(Menu.br.readLine());
-                if(choose>=1&&choose<=4){
+                if(choose>=1&&choose<=5){
                     return choose;
                 }
                 throw new IndexOutOfBoundsException();
@@ -43,7 +45,7 @@ public class SummaryMenu extends Menu{
         while(true){
             int choose=initSummaryMenu();
             if (choose == 1) {
-
+                viewSummary(classify());
             } else if (choose == 2) {
                 manageSortByName();
             } else if (choose == 3) {
@@ -57,22 +59,22 @@ public class SummaryMenu extends Menu{
             }
         }
     }
-    public static Customers[] classify(){
-        Customers[] groupByCustomers = new Customers[GroupType.values().length];
+    public static List<Customers> classify(){
+        List<Customers> groupByCustomers = new LinkedList<>();
         for (int i = 0; i <ParameterMenu.allGroups.size(); ++i) {
             Group grp = ParameterMenu.allGroups.get(i);
-            groupByCustomers[i] = grp.getCustomers(CustomerMenu.allCustomers);
+            groupByCustomers.add(grp.getCustomers(CustomerMenu.allCustomers));
         }
         return groupByCustomers;
     }
-    public static void viewSummary(Customers groupByCustomers){
+    public static void viewSummary(List<Customers> groupByCustomers){
         System.out.println();
 
-        for (int i = 0; i < ParameterMenu.allGroups.size(); i++) {
+        for (int i = 0; i < ParameterMenu.allGroups.size(); ++i) {
             Group grp = ParameterMenu.allGroups.get(i);
             int customerCount = 0;
-            if(!groupByCustomers.isNull()&&!groupByCustomers.isEmpty()){
-                customerCount=groupByCustomers.length();
+            if(groupByCustomers!=null&&!groupByCustomers.isEmpty()){
+                customerCount=groupByCustomers.size();
             }
             System.out.println();
             System.out.println("==========================");
@@ -89,11 +91,13 @@ public class SummaryMenu extends Menu{
                 }
             }
             System.out.println("============================");
-            if(!groupByCustomers.isNull()&&!groupByCustomers.isEmpty()){
+            if(groupByCustomers!=null&&!groupByCustomers.isEmpty()){
                 for (int j = 0; j < customerCount; ++j) {
-                    Customer cust = groupByCustomers.get(j);
-                    if (cust != null) {
-                        System.out.println("No. "+(j+1)+" => "+cust);
+                    for (int k = 0; k <groupByCustomers.get(j).length() ; ++k) {
+                        Customer cust = groupByCustomers.get(j).getCustomers().get(k);
+                        if (cust != null) {
+                            System.out.println("No. "+(j+1)+" => "+cust);
+                        }
                     }
                 }
             }else{
@@ -104,6 +108,9 @@ public class SummaryMenu extends Menu{
     public static String selectOrder()throws IOException{
         while(true){
             try{
+                System.out.println();
+                System.out.println("** Press 'end', if you want to exit! **");
+                System.out.print("Which order (UP, DOWN)? ");
                 String choose = Menu.br.readLine().toUpperCase();
                 if(choose==null){
                     throw new NullPointerException();
@@ -198,19 +205,103 @@ public class SummaryMenu extends Menu{
     }
 
     public static void sortByName(OrderType orderType){
+        List<Customers> groupByCustomers = classify();
+        if (orderType != null && !orderType.equals("")) {
+            for (int i = 0; i <groupByCustomers.size(); ++i) {
+                List<Customer> customers = groupByCustomers.get(i).getCustomers();
+                if(orderType==OrderType.UP){
+                    Collections.sort(customers, new Comparator<Customer>() {
+                        @Override
+                        public int compare(Customer o1, Customer o2) {
+                            return o1.getCustomerName().compareTo(o2.getCustomerName());
+                        }
+                    });
+                }else{
+                    Collections.sort(customers, new Comparator<Customer>() {
+                        @Override
+                        public int compare(Customer o1, Customer o2) {
+                            return o1.getCustomerName().compareTo(o2.getCustomerName())*-1;
+                        }
+                    });
+                }
+                groupByCustomers.get(i).setCustomers(customers);
+            }
+            viewSummary(groupByCustomers);
+        }
 
     }
     public static void sortBySpentTime(OrderType orderType){
-
+        List<Customers> groupByCustomers = classify();
+        if(orderType!=null&&!orderType.equals("")){
+            for (int i = 0; i < groupByCustomers.size(); i++) {
+                List<Customer> customers = groupByCustomers.get(i).getCustomers();
+                if(orderType==OrderType.UP){
+                    Collections.sort(customers, new Comparator<Customer>() {
+                        @Override
+                        public int compare(Customer o1, Customer o2) {
+                            if(o1.getSpentTime()<o2.getSpentTime()){
+                                return -1;
+                            }else if(o1.getSpentTime()==o2.getSpentTime()){
+                                return o1.getCustomerName()!=null&&o2.getCustomerName()!=null? o1.getCustomerName().compareTo(o2.getCustomerName()):0;
+                            }else{
+                                return 1;
+                            }
+                        }
+                    });
+                }else{
+                    Collections.sort(customers, new Comparator<Customer>() {
+                        @Override
+                        public int compare(Customer o1, Customer o2) {
+                            if(o1.getSpentTime()<o2.getSpentTime()){
+                                return 1;
+                            }else if(o1.getSpentTime()==o2.getSpentTime()){
+                                return o1.getCustomerName()!=null&&o2.getCustomerName()!=null? o1.getCustomerName().compareTo(o2.getCustomerName()):0;
+                            }else{
+                                return -1;
+                            }
+                        }
+                    });
+                }
+                groupByCustomers.get(i).setCustomers(customers);
+            }
+            viewSummary(groupByCustomers);
+        }
     }
     public static void sortBySpentMoney(OrderType orderType){
-        Customers groupByCustomers = classify().to;
-
+        List<Customers> groupByCustomers = classify();
         if (orderType != null && !orderType.equals("")) {
-            for (int i = 0; i <groupByCustomers.length(); ++i) {
-                Customer customers = groupByCustomers.get(i).getCustomers();
-
+            for (int i = 0; i <groupByCustomers.size(); ++i) {
+                List<Customer> customers = groupByCustomers.get(i).getCustomers();
+                if (orderType == OrderType.UP) {
+                    Collections.sort(customers, new Comparator<Customer>() {
+                        @Override
+                        public int compare(Customer o1, Customer o2) {
+                            if(o1.getSpentMoney()<o2.getSpentMoney()){
+                                return -1;
+                            }else if(o1.getSpentMoney()==o2.getSpentMoney()){
+                                return o1.getCustomerName()!=null&&o2.getCustomerName()!=null? o1.getCustomerName().compareTo(o2.getCustomerName()):0;
+                            }else{
+                                return 1;
+                            }
+                        }
+                    });
+                }else{
+                    Collections.sort(customers, new Comparator<Customer>() {
+                        @Override
+                        public int compare(Customer o1, Customer o2) {
+                            if(o1.getSpentMoney()<o2.getSpentMoney()){
+                                return 1;
+                            } else if (o1.getSpentMoney() == o2.getSpentMoney()) {
+                                return o1.getCustomerName()!=null&&o2.getCustomerName()!=null? o1.getCustomerName().compareTo(o2.getCustomerName()):0;
+                            }else{
+                                return -1;
+                            }
+                        }
+                    });
+                }
+                groupByCustomers.get(i).setCustomers(customers);
             }
+            viewSummary(groupByCustomers);
         }
     }
 }
