@@ -74,7 +74,7 @@ public class SummaryMenu extends Menu{
             Group grp = ParameterMenu.allGroups.get(i);
             int customerCount = 0;
             if(groupByCustomers!=null&&!groupByCustomers.isEmpty()){
-                customerCount=groupByCustomers.size();
+                customerCount=groupByCustomers.get(i).length();
             }
             System.out.println();
             System.out.println("==========================");
