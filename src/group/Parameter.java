@@ -32,10 +32,14 @@ public class Parameter {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Parameter parameter = (Parameter) o;
-        return minimumSpentTime == parameter.minimumSpentTime && minimumSpentMoney == parameter.minimumSpentMoney;
+        if (this == o) {
+            return true;
+        } else if (o != null && this.getClass() == o.getClass()) {
+            Parameter parameter = (Parameter)o;
+            return this.minimumSpentTime == parameter.minimumSpentTime && this.minimumSpentMoney == parameter.minimumSpentMoney;
+        } else {
+            return false;
+        }
     }
 
     @Override

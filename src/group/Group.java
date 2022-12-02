@@ -45,7 +45,7 @@ public class Group {
             return "GroupType: "+this.groupType+"\nParameter: null";
         }else{
             GroupType var10000 = this.groupType;
-            return "GroupType: " + var10000 + "\nParameter: "+this.parameter.toString();
+            return "GroupType: " + var10000 + "\nParameter: "+this.parameter;
         }
     }
 }

@@ -113,11 +113,13 @@ public class ParameterMenu extends Menu{
         GroupType groupType;
         try{
             groupType=GroupType.valueOf(selGroup);
+            System.out.println(groupType);
         }catch (IllegalArgumentException err){
             System.out.println("\n잘못된 입력입니다. 다시 입력해주세요.");
             continue;
         }
         Group grp = allGroups.find(groupType);
+            System.out.println(grp);
             if (grp != null&&grp.getParameter()!=null) {
                 System.out.println("\n"+selGroup+"이미 설정되어 있는 그룹입니다. 다시 선택해주세요.");
                 System.out.println("\n"+grp);
@@ -141,7 +143,9 @@ public class ParameterMenu extends Menu{
                         System.out.println("\n범위를 벗어난 입력입니다. 다시 입력해주세요.");
                         Menu.br.readLine();
                     }
-                    allGroups.add(new Group(groupType,parameter));
+                    System.out.println(parameter.getMinimumSpentTime());
+                    allGroups.find(groupType).setParameter(parameter);
+                    System.out.println(allGroups.toString());
                     CustomerMenu.allCustomers.refresh(allGroups);
                 }
             }
@@ -218,7 +222,9 @@ public class ParameterMenu extends Menu{
                 if(time<0){
                     throw new IndexOutOfBoundsException();
                 }else{
+                    System.out.println(time);
                     parameter.setMinimumSpentTime(time);
+                    System.out.println(parameter.getMinimumSpentTime());
                     return;
                 }
             }catch (IndexOutOfBoundsException err){
