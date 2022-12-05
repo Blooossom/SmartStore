@@ -74,27 +74,27 @@ public class SummaryMenu extends Menu{
             Group grp = ParameterMenu.allGroups.get(i);
             int customerCount = 0;
             if(groupByCustomers!=null&&!groupByCustomers.isEmpty()){
-                customerCount=groupByCustomers.get(i).length();
+                customerCount = groupByCustomers.get(i).getCustomers().size();
             }
             System.out.println();
             System.out.println("==========================");
             if (grp.getGroupType().equals(GroupType.NONE)) {
-                System.out.println("Others : "+customerCount+"customer(s)");
+                System.out.println("Others : "+customerCount+" customer(s)");
             }else{
                 PrintStream var = System.out;
                 String var1 = grp.getGroupType().toString();
-                var.println(var1 + " Group : "+customerCount + "customer(s)");
+                var.println(var1 + " Group : "+customerCount + " customer(s)");
                 if (grp.getParameter() == null) {
                     System.out.println("[Parameter] null");
                 }else{
-                    System.out.println("[Parameter] "+grp.getParameter().toString());
+                    System.out.println("[Parameter] " + grp.getParameter().toString());
                 }
             }
             System.out.println("============================");
-            if(groupByCustomers!=null&&!groupByCustomers.isEmpty()){
+            if(groupByCustomers != null && !groupByCustomers.isEmpty()){
                 for (int j = 0; j < customerCount; ++j) {
                     for (int k = 0; k <groupByCustomers.get(j).length() ; ++k) {
-                        Customer cust = groupByCustomers.get(j).getCustomers().get(k);
+                        Customer cust = groupByCustomers.get(j).get(k);
                         if (cust != null) {
                             System.out.println("No. "+(j+1)+" => "+cust);
                         }

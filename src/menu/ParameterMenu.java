@@ -146,7 +146,6 @@ public class ParameterMenu extends Menu{
                     System.out.println(parameter.getMinimumSpentTime());
                     allGroups.find(groupType).setParameter(parameter);
                     System.out.println(allGroups.toString());
-                    CustomerMenu.allCustomers.refresh(allGroups);
                 }
             }
         }
